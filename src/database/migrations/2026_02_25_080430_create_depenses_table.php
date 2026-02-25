@@ -17,9 +17,8 @@ return new class extends Migration
             $table->string('description');
             $table->date('date_depense');
 
-// One-to-One relation with category
             $table->foreignId('categorie_id')
-                    ->unique()                // important: unique → One-to-One
+                    ->unique()
                     ->constrained('categories')
                     ->onDelete('cascade');
 
