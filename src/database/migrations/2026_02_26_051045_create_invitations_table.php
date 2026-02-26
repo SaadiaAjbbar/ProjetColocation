@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
             $table->string('email');
-            $table->foreignId('colocation_id')->constrained()->onDelete('cascade');
-            $table->foreignId('envoye_par')->constrained('users')->onDelete('cascade');
-            $table->string('token')->unique();
-            $table->enum('statut', ['en_attente','accepte','refuse'])->default('en_attente');
+            $table->string('token');
+            $table->foreignId('colocation_id')->constrained('colocations')->onDelete('cascade');
+            $table->foreignId('invite_par')->constrained('users')->onDelete('cascade');
+            $table->boolean('accepte')->default(false);
             $table->timestamps();
         });
     }

@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('adhesions', function (Blueprint $table) {
             $table->id();
-            $table->string('nom');
-            $table->foreignId('colocation_id')->constrained()->onDelete('cascade');
+            $table->foreignId('utilisateur_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('colocation_id')->constrained('colocations')->onDelete('cascade');
+            $table->enum('role', ['owner', 'member'])->default('member');
+            $table->timestamp('left_at')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('adhesions');
     }
 };

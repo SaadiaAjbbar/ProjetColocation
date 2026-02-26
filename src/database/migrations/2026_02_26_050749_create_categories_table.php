@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('paiements', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->float('montant');
-            $table->date('date_paiement');
-            $table->foreignId('adhesion_id')->constrained()->onDelete('cascade');
+            $table->string('nom');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('paiements');
+        Schema::dropIfExists('categories');
     }
 };
