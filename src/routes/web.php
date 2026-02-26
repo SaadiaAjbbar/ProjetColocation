@@ -20,4 +20,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+
+    Route::get('admin/colocations/create', [AdminController::class, 'createColocation'])
+        ->name('admin.colocations.create');
+
+    Route::post('admin/colocations', [AdminController::class, 'storeColocation'])
+        ->name('admin.colocations.store');
 });
+

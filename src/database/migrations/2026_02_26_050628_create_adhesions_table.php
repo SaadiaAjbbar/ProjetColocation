@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('adhesions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('utilisateur_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('colocation_id')->constrained('colocations')->onDelete('cascade');
             $table->enum('role', ['owner', 'member'])->default('member');
             $table->timestamp('left_at')->nullable();

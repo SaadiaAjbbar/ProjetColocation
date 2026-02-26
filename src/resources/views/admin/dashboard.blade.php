@@ -1,34 +1,83 @@
 @extends('admin.layout')
 
 @section('content')
-<h1>Statistiques Globales</h1>
-<div class="row mb-4">
-    <div class="col-md-3"><div class="card p-3 bg-light">Utilisateurs: {{ $stats['total_users'] }}</div></div>
-    <div class="col-md-3"><div class="card p-3 bg-light">Colocations: {{ $stats['total_colocations'] }}</div></div>
-    <div class="col-md-3"><div class="card p-3 bg-light">Dépenses: {{ $stats['total_depenses'] }}</div></div>
-    <div class="col-md-3"><div class="card p-3 bg-light">Utilisateurs bannis: {{ $stats['banned_users'] }}</div></div>
+
+<h1 class="text-2xl font-bold mb-6 text-gray-800">
+    Statistiques Globales
+</h1>
+@if(session('success'))
+<div class="bg-green-100 text-green-700 p-4 rounded mb-6">
+    {{ session('success') }}
+</div>
+@endif
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <p class="text-gray-500 text-sm">Utilisateurs</p>
+        <p class="text-2xl font-bold text-blue-600">
+            {{ $stats['total_users'] }}
+        </p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <p class="text-gray-500 text-sm">Colocations</p>
+        <p class="text-2xl font-bold text-green-600">
+            {{ $stats['total_colocations'] }}
+        </p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <p class="text-gray-500 text-sm">Dépenses</p>
+        <p class="text-2xl font-bold text-purple-600">
+            {{ $stats['total_depenses'] }}
+        </p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <p class="text-gray-500 text-sm">Utilisateurs bannis</p>
+        <p class="text-2xl font-bold text-red-600">
+            {{ $stats['banned_users'] }}
+        </p>
+    </div>
+
 </div>
 
-<h2>Liste des Colocations</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Nom Colocation</th>
-            <th>Owner</th>
-            <th>Membres</th>
-            <th>Status</th>
+<!-- Colocations Table -->
+<h2 class="text-xl font-semibold mb-4 text-gray-800">
+    Liste des Colocations
+</h2>
 
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($colocations as $coloc)
-        <tr>
-            <td>{{ $coloc->name }}</td>
-            <td>{{ $coloc->owner->name }}</td>
-            <td>{{ $coloc->adhesions->count() }}</td>
-            <td>{{ $coloc->status }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+<div class="bg-white shadow rounded-lg overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-800 text-white">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-semibold">Nom</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold">Owner</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold">Membres</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold">Status</th>
+            </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200 bg-white">
+            @foreach($colocations as $coloc)
+            <tr class="hover:bg-gray-50 transition">
+                <td class="px-6 py-4">{{ $coloc->name }}</td>
+                <td class="px-6 py-4">{{ $coloc->owner->name }}</td>
+                <td class="px-6 py-4">{{ $coloc->adhesions->count() }}</td>
+                <td class="px-6 py-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold
+                        {{ $coloc->status === 'active'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-gray-200 text-gray-600' }}">
+                        {{ $coloc->status }}
+                    </span>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 @endsection
