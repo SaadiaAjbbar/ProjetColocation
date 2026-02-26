@@ -2,49 +2,54 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-
-
-        'name',
-        'email',
-        'password',
+        'name', 'email', 'password', 'role', 'reputation', 'is_banni'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Relation: User peut avoir plusieurs Adhesions (membership)
+    public function adhesions()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Adhesion::class);
+    }
+
+    // Relation: User peut posséder plusieurs colocations (owner role)
+    public function colocationsOwn()
+    {
+        return $this->hasMany(Colocation::class, 'owner_id');
+    }
+
+    // Relation: Depenses payées par user
+    public function depensesPayees()
+    {
+        return $this->hasMany(Depense::class, 'payer_id');
+    }
+
+    // Relation: DepenseParticipant pour savoir combien user doit
+    public function depenseParticipants()
+    {
+        return $this->hasMany(DepenseParticipant::class);
+    }
+
+    // Relation: Invitations envoyées par user
+    public function invitationsSent()
+    {
+        return $this->hasMany(Invitation::class, 'invited_by');
+    }
+
+    // Vérifier si admin global
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }
