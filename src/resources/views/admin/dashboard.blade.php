@@ -1,79 +1,124 @@
 @extends('admin.layout')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">
-        Statistiques Globales
-    </h1>
+    <div class="mb-8">
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Supervision Plateforme</h1>
+        <p class="text-sm text-gray-500 mt-1">Vue d'ensemble de l'activité réseau et gestion de la modération.</p>
+    </div>
+
     @if (session('success'))
-        <div class="bg-green-100 text-green-700 p-4 rounded mb-6">
-            {{ session('success') }}
+        <div
+            class="mb-6 flex items-center p-4 text-emerald-700 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg shadow-sm">
+            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-sm font-medium">{{ session('success') }}</span>
         </div>
     @endif
 
-
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <a href="{{ route('admin.users.index') }}"
+            class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-blue-500 hover:shadow-md transition-all duration-300">
+            <div class="flex items-center justify-between mb-4">
 
-        <a href="{{ route('admin.users.index') }}" class="block bg-white shadow rounded-lg p-6 hover:bg-gray-50 transition">
-            <p class="text-gray-500 text-sm">Utilisateurs</p>
-            <p class="text-2xl font-bold text-blue-600">
-                {{ $stats['total_users'] }}
-            </p>
+                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">Total</span>
+            </div>
+            <p class="text-3xl font-black text-gray-900">{{ number_format($stats['total_users']) }}</p>
+            <p class="text-sm text-gray-500 font-medium">Utilisateurs inscrits</p>
         </a>
 
-        <a href="{{ route('admin.colocations.store') }}"
-            class="block bg-white shadow rounded-lg p-6 hover:bg-gray-50 transition">
-            <p class="text-gray-500 text-sm">Colocations</p>
-            <p class="text-2xl font-bold text-green-600">
-                {{ $stats['total_colocations'] }}
-            </p>
-        </a>
+        <div
+            class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all duration-300">
+            <div class="flex items-center justify-between mb-4">
 
-        <div class="bg-white shadow rounded-lg p-6">
-            <p class="text-gray-500 text-sm">Dépenses</p>
-            <p class="text-2xl font-bold text-purple-600">
-                {{ $stats['total_depenses'] }}
-            </p>
+                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Actives</span>
+            </div>
+            <p class="text-3xl font-black text-gray-900">{{ number_format($stats['total_colocations']) }}</p>
+            <p class="text-sm text-gray-500 font-medium">Espaces de vie</p>
+        </div>
+
+        <div
+            class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-purple-500 hover:shadow-md transition-all duration-300">
+            <div class="flex items-center justify-between mb-4">
+
+                <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">Volume</span>
+            </div>
+            <p class="text-3xl font-black text-gray-900">{{ number_format($stats['total_depenses']) }}</p>
+            <p class="text-sm text-gray-500 font-medium">Dépenses partagées</p>
         </div>
 
         <a href="{{ route('admin.users.banned') }}"
-            class="block bg-white shadow rounded-lg p-6 hover:bg-gray-50 transition">
-            <p class="text-gray-500 text-sm">Utilisateurs bannis</p>
-            <p class="text-2xl font-bold text-red-600">
-                {{ $stats['banned_users'] }}
-            </p>
-        </a>
+            class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-red-500 hover:shadow-md transition-all duration-300">
+            <div class="flex items-center justify-between mb-4">
 
+                <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded">Modération</span>
+            </div>
+            <p class="text-3xl font-black text-gray-900">{{ $stats['banned_users'] }}</p>
+            <p class="text-sm text-gray-500 font-medium">Comptes suspendus</p>
+        </a>
     </div>
 
-    <!-- Colocations Table -->
-    <h2 class="text-xl font-semibold mb-4 text-gray-800">
-        Liste des Colocations
-    </h2>
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16">
+                </path>
+            </svg>
+            Audit des Colocations
+        </h2>
+    </div>
 
-    <div class="bg-white shadow rounded-lg overflow-hidden">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-800 text-white">
+            <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-sm font-semibold">Nom</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold">Owner</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold">Membres</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold">Status</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nom & ID</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Responsable
+                        (Owner)</th>
+                    <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Occupation
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">État</th>
                 </tr>
             </thead>
-
-            <tbody class="divide-y divide-gray-200 bg-white">
+            <tbody class="divide-y divide-gray-100 bg-white">
                 @foreach ($colocations as $coloc)
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="px-6 py-4">{{ $coloc->name }}</td>
-                        <td class="px-6 py-4">{{ $coloc->owner->name }}</td>
-                        <td class="px-6 py-4">{{ $coloc->adhesions->count() }}</td>
-                        <td class="px-6 py-4">
-                            <span
-                                class="px-3 py-1 rounded-full text-xs font-semibold
-                        {{ $coloc->status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600' }}">
-                                {{ $coloc->status }}
-                            </span>
+                    <tr class="hover:bg-slate-50 transition-colors group">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-bold text-gray-900">{{ $coloc->name }}</div>
+                            <div class="text-[10px] text-gray-400 font-mono">ID: {{ substr($coloc->id, 0, 8) }}...</div>
                         </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                                <div
+                                    class="w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center text-[10px] font-bold text-slate-600 border border-slate-200">
+                                    {{ substr($coloc->owner->name, 0, 1) }}
+                                </div>
+                                <span class="text-sm text-gray-700 font-medium">{{ $coloc->owner->name }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <div
+                                class="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 text-xs font-bold">
+                                {{ $coloc->adhesions->count() }} membres
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            @if ($coloc->status === 'active')
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-500"></span>
+                                    Active
+                                </span>
+                            @else
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500">
+                                    Archivée
+                                </span>
+                            @endif
+                        </td>
+
                     </tr>
                 @endforeach
             </tbody>
