@@ -9,13 +9,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Page Register
     public function showRegister()
     {
-        return view('auth.register'); // resources/views/auth/register.blade.php
+        return view('auth.register');
     }
 
-    // Submit Register
     public function register(Request $request)
     {
         $request->validate([
@@ -24,7 +22,6 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // Check if first user
         $firstUser = User::count() === 0;
 
         $user = User::create([
@@ -33,16 +30,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => $firstUser ? 'admin' : 'utilisateur',
         ]);
-        return redirect()->route('login'); // redirection après login
+        return redirect()->route('login');
     }
 
-    // Page Login
     public function showLogin()
     {
-        return view('auth.login'); // resources/views/auth/login.blade.php
+        return view('auth.login');
     }
 
-    // Submit Login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -60,7 +55,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // Logout
     public function logout(Request $request)
     {
         Auth::logout();

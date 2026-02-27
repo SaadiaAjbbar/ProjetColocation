@@ -18,7 +18,6 @@ class ColocationController extends Controller
         return view('admin.colocations.dashboard_owner', compact('colocation'));
     }
 
-    // Check if member via adhesions
     $isMember = $colocation->adhesions()
         ->where('user_id', $user->id)
         ->exists();
