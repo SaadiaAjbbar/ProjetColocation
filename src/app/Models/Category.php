@@ -15,4 +15,9 @@ class Category extends Model
     {
         return $this->hasMany(Depense::class);
     }
+
+    public function colocation()
+    {
+        return $this->belongsTo(Colocation::class);
+    }
 }
