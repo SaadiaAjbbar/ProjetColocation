@@ -16,10 +16,16 @@
         Accueil
     </a>
 
+    <a href="{{ route('admin.my_colocations.index') }}"
+       class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-sm font-medium transition">
+        Mes colocations
+    </a>
+
     <a href="{{ route('admin.colocations.create') }}"
        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-sm font-medium transition">
         + Nouvelle Colocation
     </a>
+
 
     <form method="POST" action="{{ route('logout') }}">
         @csrf
