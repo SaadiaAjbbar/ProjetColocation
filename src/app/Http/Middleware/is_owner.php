@@ -17,13 +17,14 @@ class is_owner
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user=Auth::user();
-        $adhesion=Adhesion::where('user_id',$user->id)->where('role','owner')->where('left_at',null)->first;
-
-        if(!$adhesion){
+        $user = Auth::user();
+        $adhesion = Adhesion::where('user_id', $user->id)->where('left_at', null)->first();
+        if ($user && $adhesion->role == "owner") {
+            return $next($request);
+        }else if($user && $adhesion->role=="member"){
+            return redirect()->route('dashboardMember');
+        }else{
             return abort(403);
         }
-
-        return $next($request);
     }
 }
