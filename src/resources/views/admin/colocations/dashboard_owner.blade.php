@@ -22,7 +22,7 @@
         </svg>
         Administration
     </h2>
-
+    <!--****************Gerer categories*************-->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <a href="{{ route('admin.categories.index', $colocation->id) }}"
             class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all flex items-center gap-5">
@@ -32,15 +32,17 @@
                 <p class="text-sm text-gray-500">Personnalisez les types de dépenses.</p>
             </div>
         </a>
-
-        <a href="#"
-            class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:border-indigo-500 hover:shadow-md transition-all flex items-center gap-5">
-
-            <div>
-                <h3 class="text-lg font-bold text-gray-900">Inviter membres</h3>
-                <p class="text-sm text-gray-500">Gérez les accès et envoyez des tokens.</p>
-            </div>
-        </a>
+        <!--***************Inviter member************-->
+        <form action="{{ route('admin.invitations.store', $colocation->id) }}" method="POST"
+            class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            @csrf
+            <h3 class="text-lg font-bold mb-2">Inviter membre</h3>
+            <input type="email" name="email" placeholder="Email du membre" class="border rounded px-3 py-2 w-full mb-3"
+                required>
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded">
+                Envoyer invitation
+            </button>
+        </form>
     </div>
 
     <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Finances & Vie Commune</h2>

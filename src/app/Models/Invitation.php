@@ -10,7 +10,7 @@ class Invitation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'email', 'token', 'colocation_id', 'invited_by', 'accepted'
+        'email', 'token', 'colocation_id', 'invite_par', 'accepted'
     ];
 
     public function colocation()

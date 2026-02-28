@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Adhesion;
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
         ]);
 
         $firstUser = User::count() === 0;
@@ -30,6 +32,26 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => $firstUser ? 'admin' : 'utilisateur',
         ]);
+
+
+
+        if (session()->has('invitation_token')) {
+
+            $invitation = Invitation::where('token', session('invitation_token'))->first();
+
+            if ($invitation) {
+
+                Adhesion::create([
+                    'user_id' => $user->id,
+                    'colocation_id' => $invitation->colocation_id
+                ]);
+
+                $invitation->accepte = true;
+                $invitation->save();
+
+                session()->forget('invitation_token');
+            }
+        }
         return redirect()->route('login');
     }
 

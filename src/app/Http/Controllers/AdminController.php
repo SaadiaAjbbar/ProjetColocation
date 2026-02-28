@@ -60,7 +60,7 @@ class AdminController extends Controller
         $colocations = Colocation::where('owner_id', $user->id)
             ->orWhereHas('adhesions', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
-            })
+            })->withCount(['adhesions', 'depenses'])
             ->with('owner')
             ->get();
         return view('admin.colocations.my_colocations.index', compact('colocations'));

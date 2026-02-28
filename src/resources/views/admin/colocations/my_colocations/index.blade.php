@@ -36,11 +36,11 @@
 
                     <div class="flex items-center gap-4 text-sm text-gray-600">
                         <div class="flex items-center gap-1">
-                            <span class="font-bold text-gray-900">{{ $coloc->members_count ?? '0' }}</span> Membres
+                            <span class="font-bold text-gray-900">{{ $coloc->adhesions_count ?? '0' }}</span> Membres
                         </div>
                         <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
                         <div class="flex items-center gap-1">
-                            <span class="font-bold text-gray-900">{{ $coloc->expenses_count ?? '0' }}</span> Dépenses
+                            <span class="font-bold text-gray-900">{{ $coloc->depenses_count ?? '0' }}</span> Dépenses
                         </div>
                     </div>
                 </div>

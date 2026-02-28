@@ -37,6 +37,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/colocations/my_colocations', [AdminController::class, 'myColocation'])->name('my_colocations.index');
 
     Route::get('/colocations/{colocation}/dashboard', [ColocationController::class, 'dashboard'])->name('colocations.dashboard');
+    
     Route::post('/admin/colocations/{colocation}/cancel', [ColocationController::class, 'cancel'])->name('colocations.cancel');
 
     //****************categories
@@ -54,7 +55,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     //Invitation
     // formulaire invitation
-    Route::post('/admin/colocations/{colocation}/invite',[InvitationController::class, 'store'])->name('admin.invitations.store');
+    Route::post('/colocations/{colocation}/invite',[InvitationController::class, 'store'])->name('invitations.store');
 
     // lien token
     Route::get('/invitation/{token}',[InvitationController::class, 'accept'])->name('invitations.accept');
