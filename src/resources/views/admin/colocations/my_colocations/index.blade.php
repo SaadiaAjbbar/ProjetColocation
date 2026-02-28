@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="mt-auto border-t border-gray-100 bg-gray-50 p-4">
-                    <a href="{{ route('colocation.dashboard', $coloc->id) }}" class="flex items-center justify-center w-full px-4 py-2 bg-white border border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all gap-2 shadow-sm">
+                    <a href="{{ route('admin.colocations.dashboard', $coloc->id) }}" class="flex items-center justify-center w-full px-4 py-2 bg-white border border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all gap-2 shadow-sm">
                         Accéder au Dashboard
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </a>

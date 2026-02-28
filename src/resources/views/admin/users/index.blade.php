@@ -3,7 +3,7 @@
 @section('content')
     <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Annuaire des Utilisateurs</h1>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">liste des Utilisateurs</h1>
             <p class="text-sm text-gray-500 mt-1">Gérez les accès, modifiez les rôles et appliquez les sanctions.</p>
         </div>
 

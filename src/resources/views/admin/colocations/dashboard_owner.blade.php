@@ -65,9 +65,14 @@
             <p class="text-xs text-red-600">L'annulation de la colocation est irréversible et affectera la réputation des
                 membres débiteurs.</p>
         </div>
-        <button
-            class="px-4 py-2 bg-white border border-red-200 text-red-600 text-xs font-bold rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm uppercase tracking-tighter">
-            Annuler la colocation
-        </button>
+        <!--********************** Annuler Colocation *******************-->
+        <form action="{{ route('admin.colocations.cancel', $colocation->id) }}" method="POST"
+            onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette colocation ?')">
+            @csrf
+            <button
+                class="px-4 py-2 bg-white border border-red-200 text-red-600 text-xs font-bold rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm uppercase tracking-tighter">
+                Annuler la colocation
+            </button>
+        </form>
     </div>
 @endsection

@@ -1,10 +1,6 @@
 @extends('admin.layout')
 
 @section('content')
-    <div class="mb-8">
-        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Supervision Plateforme</h1>
-        <p class="text-sm text-gray-500 mt-1">Vue d'ensemble de l'activité réseau et gestion de la modération.</p>
-    </div>
 
     @if (session('success'))
         <div
@@ -21,52 +17,36 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         <a href="{{ route('admin.users.index') }}"
             class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-blue-500 hover:shadow-md transition-all duration-300">
-            <div class="flex items-center justify-between mb-4">
 
-                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">Total</span>
-            </div>
             <p class="text-3xl font-black text-gray-900">{{ number_format($stats['total_users']) }}</p>
-            <p class="text-sm text-gray-500 font-medium">Utilisateurs inscrits</p>
+            <p class="text-sm text-gray-500 font-medium">Utilisateurs</p>
         </a>
 
         <div
             class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all duration-300">
-            <div class="flex items-center justify-between mb-4">
 
-                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Actives</span>
-            </div>
             <p class="text-3xl font-black text-gray-900">{{ number_format($stats['total_colocations']) }}</p>
-            <p class="text-sm text-gray-500 font-medium">Espaces de vie</p>
+            <p class="text-sm text-gray-500 font-medium">colocations</p>
         </div>
 
         <div
             class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-purple-500 hover:shadow-md transition-all duration-300">
-            <div class="flex items-center justify-between mb-4">
 
-                <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">Volume</span>
-            </div>
             <p class="text-3xl font-black text-gray-900">{{ number_format($stats['total_depenses']) }}</p>
-            <p class="text-sm text-gray-500 font-medium">Dépenses partagées</p>
+            <p class="text-sm text-gray-500 font-medium">Dépenses</p>
         </div>
 
         <a href="{{ route('admin.users.banned') }}"
             class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-red-500 hover:shadow-md transition-all duration-300">
-            <div class="flex items-center justify-between mb-4">
 
-                <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded">Modération</span>
-            </div>
             <p class="text-3xl font-black text-gray-900">{{ $stats['banned_users'] }}</p>
-            <p class="text-sm text-gray-500 font-medium">Comptes suspendus</p>
+            <p class="text-sm text-gray-500 font-medium">Comptes bannis</p>
         </a>
     </div>
 
     <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16">
-                </path>
-            </svg>
-            Audit des Colocations
+            Liste des Colocations
         </h2>
     </div>
 
