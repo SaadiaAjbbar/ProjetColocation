@@ -28,8 +28,7 @@ class DepenseController extends Controller
             'categorie_id' => 'required',
             'participants' => 'required|array'
         ]);
-        // dd($request->payeur_id);
-        // die();
+     
 
         $depense = Depense::create([
             'nom' => $request->nom,

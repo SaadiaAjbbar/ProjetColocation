@@ -36,10 +36,12 @@ class DashbordController extends Controller
                 $user = User::find($participant->utilisateur_id);
 
                 if (!isset($usersTotals[$user->id])) {
+
                     $usersTotals[$user->id] = [
                         'user' => $user,
                         'montant_du' => 0,
                     ];
+
                 }
                 $usersTotals[$user->id]['montant_du'] += $participant->montant_du;
             }
