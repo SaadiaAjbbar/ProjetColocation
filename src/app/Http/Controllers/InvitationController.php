@@ -32,7 +32,7 @@ class InvitationController extends Controller
             'colocation_id' => $colocation->id,
             'invite_par' => Auth::id(),
         ]);
-            Mail::send('emails.invitation', ['colocation' => $colocation, 'token' => $token], function ($message) use ($request) {
+            Mail::send('emails.invitation', ['colocation' => $colocation, 'token' => $token] , function ($message) use ($request) {
                 $message->to($request->email)->subject('Invitation Colocation');
             });
 
@@ -42,8 +42,9 @@ class InvitationController extends Controller
         $adherent = $user->adhesions()->whereNull('left_at')->exists();
 
         if ($adherent ) {
-            return back()->with('error', 'Cet utilisateur est déjà membre de la colocation');
+            return back()->with('error', 'Cet utilisateur est déjà membre d\'une colocation');
         }
+
         // envoyer email
             $invitation = Invitation::create([
                 'email' => $request->email,
@@ -63,7 +64,6 @@ class InvitationController extends Controller
         $invitation = Invitation::where('token', $token)->where('accepte', false)->firstOrFail();
 
         if (Auth::check()) {
-            $invitation = Invitation::where('token', session('invitation_token'))->first();
 
             if ($invitation) {
                 Adhesion::create([
@@ -83,3 +83,5 @@ class InvitationController extends Controller
         return redirect()->route('register');
     }
 }
+
+

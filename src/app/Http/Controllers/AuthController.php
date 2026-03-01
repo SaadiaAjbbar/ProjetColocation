@@ -24,15 +24,13 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        $firstUser = User::count() === 0;
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $firstUser ? 'admin' : 'utilisateur',
+            'role' => User::count() === 0 ? 'admin' : 'utilisateur',
         ]);
-
 
 
         if (session()->has('invitation_token')) {

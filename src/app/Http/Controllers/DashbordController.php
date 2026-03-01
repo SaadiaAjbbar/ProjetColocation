@@ -12,13 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class DashbordController extends Controller
 {
-    public function index()
+    public function dashboardAdmin()
     {
         $stats = [
             'total_users' => User::count(),
             'total_colocations' => Colocation::count(),
-            'total_depenses' => Depense::count(),
-            'banned_users' => User::where('is_banni', true)->count(),
+            'total_depenses' => Depense::count()
         ];
 
         $colocations = Colocation::with('owner', 'adhesions')->get();
