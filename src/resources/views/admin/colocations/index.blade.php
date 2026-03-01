@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layout')
 
 @section('content')
 <h1 class="text-2xl font-bold mb-6 text-gray-800">Liste des colocations</h1>

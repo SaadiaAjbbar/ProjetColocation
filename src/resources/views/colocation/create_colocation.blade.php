@@ -1,9 +1,9 @@
-@extends('admin.layout')
+@extends('layout')
 
 @section('content')
     <div class="max-w-xl mx-auto">
         <div class="mb-6">
-            <a href="{{ route('admin.my_colocations.index') }}"
+            <a href="{{ route('my_colocations.index') }}"
                 class="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-2 group transition">
                 <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
@@ -22,7 +22,7 @@
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
             <div class="bg-gradient-to-r from-blue-600 to-indigo-600 h-2"></div>
 
-            <form action="{{ route('admin.colocations.store') }}" method="POST" class="p-8">
+            <form action="{{ route('colocations.store') }}" method="POST" class="p-8">
                 @csrf
 
                 <div class="space-y-6">

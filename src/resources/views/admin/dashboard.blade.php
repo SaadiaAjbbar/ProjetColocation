@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layout')
 
 @section('content')
 
@@ -15,7 +15,7 @@
     @endif
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        <a href="{{ route('admin.users.index') }}"
+        <a href="{{ route('users.index') }}"
             class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-blue-500 hover:shadow-md transition-all duration-300">
 
             <p class="text-3xl font-black text-gray-900">{{ number_format($stats['total_users']) }}</p>
@@ -36,7 +36,7 @@
             <p class="text-sm text-gray-500 font-medium">Dépenses</p>
         </div>
 
-        <a href="{{ route('admin.users.banned') }}"
+        <a href="{{ route('users.banned') }}"
             class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-red-500 hover:shadow-md transition-all duration-300">
 
             <p class="text-3xl font-black text-gray-900">{{ $stats['banned_users'] }}</p>

@@ -18,7 +18,7 @@ class is_member
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-
+        
         if ($user->role == 'utilisateur') {
             $adhesion = Adhesion::where('user_id', $user->id)->where('left_at', null)->first();
 
@@ -28,7 +28,8 @@ class is_member
                 return redirect()->route("dashboard");
             }
         } else {
-            return redirect()->route("dashboardAdmin");
+            $adhesion = Adhesion::where('user_id', $user->id)->where('left_at', null)->first();
+            return redirect()->route('dashboardAdmin');
         }
     }
 }

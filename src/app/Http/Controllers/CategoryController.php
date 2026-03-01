@@ -17,7 +17,7 @@ class CategoryController extends Controller
             abort(403);
         }
 
-        return view('admin.categories.create', compact('colocation'));
+        return view('colocation.categories.create', compact('colocation'));
     }
 
     public function store(Request $request, Colocation $colocation)
@@ -36,7 +36,7 @@ class CategoryController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.categories.index', $colocation->id)
+            ->route('categories.index', $colocation->id)
             ->with('success', 'Catégorie ajoutée avec succès');
     }
 
@@ -51,7 +51,7 @@ class CategoryController extends Controller
         $categories = Category::where("colocation_id", $colocation->id)->get();
 
 
-        return view('admin.categories.index', compact('colocation', 'categories'));
+        return view('colocation.categories.index', compact('colocation', 'categories'));
     }
 
     public function edit(Colocation $colocation, Category $category)
@@ -64,7 +64,7 @@ class CategoryController extends Controller
             abort(404);
         }
 
-        return view('admin.categories.edit', compact('colocation', 'category'));
+        return view('colocation.categories.edit', compact('colocation', 'category'));
     }
 
 
@@ -87,7 +87,7 @@ class CategoryController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.categories.index', $colocation->id)
+            ->route('categories.index', $colocation->id)
             ->with('success', 'Catégorie modifiée avec succès');
     }
 
@@ -105,7 +105,7 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()
-            ->route('admin.categories.index', $colocation->id)
+            ->route('categories.index', $colocation->id)
             ->with('success', 'Catégorie supprimée avec succès');
     }
 }

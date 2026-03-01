@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Adhesion;
+use App\Models\Colocation;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,14 +18,10 @@ class is_owner
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-        $adhesion = Adhesion::where('user_id', $user->id)->where('left_at', null)->first();
-        if ($user && $adhesion->role == "owner") {
-            return $next($request);
-        }else if($user && $adhesion->role=="member"){
-            return redirect()->route('dashboardMember');
-        }else{
-            return abort(403);
-        }
+        $colocation = $request->route('colocation');
+
+
+
+        return $next($request);
     }
 }

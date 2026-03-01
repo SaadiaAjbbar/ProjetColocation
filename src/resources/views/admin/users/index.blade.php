@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layout')
 
 @section('content')
     <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">

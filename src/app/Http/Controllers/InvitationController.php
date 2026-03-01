@@ -6,6 +6,7 @@ use App\Models\Colocation;
 use Illuminate\Http\Request;
 
 use App\Models\Invitation;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
@@ -19,7 +20,7 @@ class InvitationController extends Controller
         }
 
         $request->validate([
-            'email' => 'required|email'
+            'email' => 'required|email',
         ]);
 
         $token = Str::random(40);
@@ -28,28 +29,37 @@ class InvitationController extends Controller
             'email' => $request->email,
             'token' => $token,
             'colocation_id' => $colocation->id,
-            'invite_par' => Auth::id()
+            'invite_par' => Auth::id(),
         ]);
 
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+
+            // envoyer email
+            Mail::send('emails.invitation', ['colocation' => $colocation, 'token' => $token], function ($message) use ($request) {
+                $message->to($request->email)->subject('Invitation Colocation');
+            });
+
+            return back()->with('success', 'Invitation envoyée');
+        }
+
+        $adherent = $user->adhesions()->whereNull('left_at')->first();
+
+        if ($adherent) {
+            return back()->with('error', 'Cet utilisateur est déjà membre de la colocation');
+        }
         // envoyer email
-        Mail::raw(
-            "Vous avez été invité à rejoindre une colocation. Cliquez ici : "
-                . route('admin.invitations.accept', $token),
-            function ($message) use ($request) {
-                $message->to($request->email)
-                    ->subject('Invitation Colocation');
-            }
-        );
+        Mail::send('emails.invitation', ['colocation' => $colocation, 'token' => $token], function ($message) use ($request) {
+            $message->to($request->email)->subject('Invitation Colocation');
+        });
 
         return back()->with('success', 'Invitation envoyée');
     }
 
     public function accept($token)
     {
-        $invitation = Invitation::where('token', $token)
-            ->where('accepte', false)
-            ->firstOrFail();
-
+        $invitation = Invitation::where('token', $token)->where('accepte', false)->firstOrFail();
 
         session(['invitation_token' => $token]);
 

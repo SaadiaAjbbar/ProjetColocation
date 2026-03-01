@@ -11,76 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function index()
-    {
-        $stats = [
-            'total_users' => User::count(),
-            'total_colocations' => Colocation::count(),
-            'total_depenses' => Depense::count(),
-            'banned_users' => User::where('is_banni', true)->count(),
-        ];
-
-        $colocations = Colocation::with('owner', 'adhesions')->get();
-
-        return view('admin.dashboard', compact('stats', 'colocations'));
-    }
-
-    public function createColocation()
-    {
-        return view('admin.create_colocation');
-    }
-    public function storeColocation(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $colocation = Colocation::create([
-            'name' => $request->name,
-            'status' => 'active',
-            'owner_id' => Auth::id()
-        ]);
-
-        Adhesion::create([
-            'user_id' => Auth::id(),
-            'colocation_id' => $colocation->id,
-            'role' => 'owner'
-        ]);
-
-        return redirect()
-            ->route('admin.dashboard')
-            ->with('success', 'Colocation créée avec succès');
-    }
 
 
-    public function myColocation()
-    {
-        $user = Auth::user();
 
-        $colocations = Colocation::where('owner_id', $user->id)
-            ->orWhereHas('adhesions', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })->withCount(['adhesions', 'depenses'])
-            ->with('owner')
-            ->get();
-        return view('admin.colocations.my_colocations.index', compact('colocations'));
-    }
-
-    public function users()
-    {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
-    }
-
-    public function colocations()
-    {
-        $colocations = Colocation::with('owner', 'adhesions')->get();
-        return view('admin.colocations.index', compact('colocations'));
-    }
-
-    public function bannedUsers()
-    {
-        $users = User::where('is_banni', true)->get();
-        return view('admin.users.banned', compact('users'));
-    }
 }

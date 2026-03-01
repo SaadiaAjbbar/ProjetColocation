@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layout')
 
 @section('content')
     <div class="mb-8">
@@ -24,7 +24,7 @@
     </h2>
     <!--****************Gerer categories*************-->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        <a href="{{ route('admin.categories.index', $colocation->id) }}"
+        <a href="{{ route('categories.index', $colocation->id) }}"
             class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all flex items-center gap-5">
 
             <div>
@@ -33,7 +33,7 @@
             </div>
         </a>
         <!--***************Inviter member************-->
-        <form action="{{ route('admin.invitations.store', $colocation->id) }}" method="POST"
+        <form action="{{ route('invitations.store', $colocation->id) }}" method="POST"
             class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
             @csrf
             <h3 class="text-lg font-bold mb-2">Inviter membre</h3>
@@ -68,7 +68,7 @@
                 membres débiteurs.</p>
         </div>
         <!--********************** Annuler Colocation *******************-->
-        <form action="{{ route('admin.colocations.cancel', $colocation->id) }}" method="POST"
+        <form action="{{ route('colocations.cancel', $colocation->id) }}" method="POST"
             onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette colocation ?')">
             @csrf
             <button

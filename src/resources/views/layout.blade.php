@@ -21,17 +21,16 @@
             <h1 class="text-2xl font-bold tracking-tight text-blue-400">Colocation<span class="text-white">Systeme</span></h1>
             <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">Global Admin</p>
         </div>
-
         <nav class="flex-1 px-4 space-y-2">
             <p class="text-[10px] font-semibold text-slate-500 uppercase px-2">Navigation</p>
 
-            <a href="{{ route('admin.dashboard') }}"
-                class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800' }}">
+            <a href="{{ route('dashboardAdmin') }}"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ request()->routeIs('dashboardAdmin') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800' }}">
 
                 Statistiques
             </a>
 
-            <a href="{{ route('admin.my_colocations.index') }}"
+            <a href="{{ route('my_colocations.index') }}"
                 class="flex items-center gap-3 px-3 py-2 rounded-lg transition hover:bg-slate-800 text-slate-300">
 
                 Mes Colocations
@@ -39,7 +38,7 @@
 
             <div class="pt-4 mt-4 border-t border-slate-800">
                 <p class="text-[10px] font-semibold text-slate-500 uppercase px-2 mb-2">Actions</p>
-                <a href="{{ route('admin.colocations.create') }}"
+                <a href="{{ route('colocations.create') }}"
                     class="flex items-center gap-3 px-3 py-2 rounded-lg bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600/20 transition border border-emerald-600/20">
                     <span class="text-lg font-bold">+</span>
                     Nouvelle Colocation
@@ -87,8 +86,28 @@
                 @yield('content')
             </div>
         </section>
+        @if (session('success'))
+            <div  id="prompte" class="absolute bottom-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-lg shadow-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div id="prompte" class="absolute bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg">
+                {{ session('error') }}
+            </div>
+        @endif
     </main>
 
+    <script>
+        // Masquer le prompte après 3 secondes
+        setTimeout(() => {
+            const prompte = document.getElementById('prompte');
+            if (prompte) {
+                prompte.style.display = 'none';
+            }
+        }, 3000);
+    </script>
 </body>
 
 </html>

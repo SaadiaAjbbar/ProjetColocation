@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layout')
 
 @section('content')
     <div class="max-w-xl mx-auto">
@@ -7,7 +7,7 @@
             Modifier Catégorie - {{ $colocation->name }}
         </h1>
 
-        <form method="POST" action="{{ route('admin.categories.update', [$colocation->id, $category->id]) }}"
+        <form method="POST" action="{{ route('categories.update', [$colocation->id, $category->id]) }}"
             class="bg-white shadow p-6 rounded-lg">
 
             @csrf
