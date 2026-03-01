@@ -16,7 +16,7 @@
                 </h1>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                     la meilleure methode pour gerer les depenses de votre colocations avec vos collegues sans problemes , nous sommes ici pour faciliter vos calcules
-
+                    
                 </p>
             </div>
 
