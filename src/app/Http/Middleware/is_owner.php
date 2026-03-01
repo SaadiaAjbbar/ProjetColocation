@@ -19,9 +19,30 @@ class is_owner
     public function handle(Request $request, Closure $next): Response
     {
         $colocation = $request->route('colocation');
+        $user = Auth::user();
+        if (!is_string($colocation)) {
+            $colocation = $colocation->id;
+        }
+        // dd($colocation);
+        // die();
 
+        if ($user->role == 'utilisateur') {
+            $adhesion = Adhesion::where('user_id', $user->id)->where('colocation_id', $colocation)->where('left_at', null)->first();
 
+            if ($adhesion && $adhesion->role == 'owner') {
+                return $next($request);
+            } else {
+                return redirect()->route('dashboardUser');
+            }
+        } else {
+            $adhesion = Adhesion::where('user_id', $user->id)->where('colocation_id', $colocation)->where('left_at', null)->first();
 
-        return $next($request);
+            if ($adhesion && $adhesion->role == 'owner') {
+                return $next($request);
+            } else {
+                return redirect()->route('dashboardUser');
+            }
+            return redirect()->route('dashboardAdmin');
+        }
     }
 }

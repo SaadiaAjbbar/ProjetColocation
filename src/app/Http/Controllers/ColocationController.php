@@ -39,6 +39,15 @@ class ColocationController extends Controller
     public function cancel(Colocation $colocation)
     {
         $user = Auth::user();
+        $adhesion = Adhesion::where('user_id', $user->id)
+            ->where('colocation_id', $colocation->id)
+            ->first();
+        foreach ($colocation->adhesions as $adhesion) {
+            if ($adhesion->user_id !== $user->id) {
+                $adhesion->left_at = now();
+                $adhesion->save();
+            }
+        }
 
         if ($colocation->owner_id !== $user->id) {
             abort(403);
@@ -79,7 +88,7 @@ class ColocationController extends Controller
             'role' => 'owner',
         ]);
 
-        return redirect()->route('dashboardAdmin')->with('success', 'Colocation créée avec succès');
+        return redirect()->route('dashboardUser')->with('success', 'Colocation créée avec succès');
     }
 
     public function colocations()
@@ -160,6 +169,25 @@ class ColocationController extends Controller
 
         return $totalPaye - $totalDu;
     }
+
+    public function depenses(Colocation $colocation)
+    {
+        $user = Auth::user();
+
+        $isOwner = $colocation->owner_id === $user->id;
+        $isMember = $colocation->adhesions()
+            ->where('user_id', $user->id)
+            ->exists();
+
+        if (!$isOwner && !$isMember) {
+            abort(403);
+        }
+
+        $depenses = $colocation->depenses()->with('payeur')->get();
+
+        return view('colocation.depenses', compact('colocation', 'depenses'));
+    }
+
 }
 
 

@@ -36,9 +36,7 @@
                             class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Rôle</th>
                         <th scope="col"
                             class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">État</th>
-                        <th scope="col"
-                            class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions
-                        </th>
+
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
@@ -84,33 +82,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end gap-2">
-                                    @if ($user->id !== auth()->id())
-                                        {{-- Sécurité : ne pas s'auto-bannir --}}
-                                        <form action="" method="POST"
-                                            onsubmit="return confirm('Confirmer l\'action sur cet utilisateur ?')">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit"
-                                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm {{ $user->is_banned ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-red-50 text-red-600 border border-red-100 hover:bg-red-600 hover:text-white' }}">
-                                                {{ $user->is_banned ? 'Réactiver' : 'Bannir' }}
-                                            </button>
-                                        </form>
-                                    @endif
-                                    <button
-                                        class="p-1.5 text-gray-400 hover:text-slate-900 transition hover:bg-gray-100 rounded-lg"
-                                        title="Voir les détails">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
+
                         </tr>
                     @endforeach
                 </tbody>

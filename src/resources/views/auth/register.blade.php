@@ -54,7 +54,7 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-1.5">Mot de passe</label>
                     <input type="password" name="password"
                         class="w-full px-4 py-3 rounded-xl border {{ $errors->has('password') ? 'border-red-500' : 'border-gray-200' }} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                        placeholder="Min. 8 caractères" required>
+                        placeholder="Min. 6 caractères" required>
                     @error('password')
                         <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                     @enderror

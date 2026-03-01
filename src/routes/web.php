@@ -5,15 +5,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\DashbordController;
+use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\is_member;
 use App\Http\Middleware\is_owner;
+use App\Http\Middleware\ontreColocation;
 use App\Http\Middleware\virifie;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
-    // hena kine les route deyoule user global  ye3eni ki9edare yedkhol lihome kolchi ila makanoche dakheline lchi colocation
     Route::get('/colocations/create', [ColocationController::class, 'createColocation'])->name('colocations.create');
     Route::post('/colocations', [ColocationController::class, 'storeColocation'])->name('colocations.store');
     Route::get('/colocations/my_colocations', [ColocationController::class, 'myColocation'])->name('my_colocations.index');
@@ -21,7 +23,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    //hana kine les route deyoule admin global  ye3eni ki9edare yedkhol lihome kife kane dakhel ola ma dakhelch lchi colocation
 
     Route::get('dashboardAdmin', [DashbordController::class, 'index'])->name('dashboardAdmin');
 
@@ -33,9 +34,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::middleware(['auth', is_owner::class])->group(function () {
-    // hana kine les route deyoule owner ye3eni ki9edare yedkhol lihome kife kane user ola admine lmohime ykone owner deyale colocation
 
-    Route::get('/colocations/{colocation}/dashboardOwner', [DashbordController::class, 'dashboardOwner'])->name('colocations.dashboardOwner');
+    Route::get('/colocations/{colocation}/dashboardOwner', [DashbordController::class, 'dashboardOwner'])->name('dashboardOwner');
 
     Route::post('/colocations/{colocation}/invite', [InvitationController::class, 'store'])->name('invitations.store');
 
@@ -54,20 +54,21 @@ Route::middleware(['auth', is_owner::class])->group(function () {
     Route::post('/colocations/{colocation}/cancel', [ColocationController::class, 'cancel'])->name('colocations.cancel');
 });
 
+/******////// */
+
 Route::middleware(['auth', virifie::class])->group(function () {
-    // hadu hiya inter point deyale lproje ye3eni hiya dawara lewasetaniya li warutek lbareh fu lware9a marade tezudy fuha walo
     Route::get('/', [DashbordController::class, 'dashboardUser'])->name('dashboardUser');
 });
 
-// member routes
 
 Route::middleware(['auth', is_member::class])->group(function () {
-    // hana kine les route deyoule owner ye3eni ki9edare yedkhol lihome kife kane user ola admine lmohime ykone member deyale colocation
     Route::get('/dashboardMember/{colocation}', [DashbordController::class, 'dashboardMember'])->name('dashboardMember');
     Route::get('/colocations/{colocation}/members', [ColocationController::class, 'members'])->name('colocations.members');
     Route::delete('/colocations/{colocation}/leave', [ColocationController::class, 'leave'])->name('colocations.leave');
+    Route::get('/colocations/{colocation}/depenses', [ColocationController::class, 'depenses'])->name('colocations.depenses');
 });
 
+/******////// */
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
@@ -76,3 +77,9 @@ Route::middleware('guest')->group(function () {
 });
 // other routes
 Route::get('/invitation/{token}', [InvitationController::class, 'accept'])->name('invitations.accept');
+
+Route::middleware(['auth', ontreColocation::class])->group(function () {
+    Route::get('/colocations/{colocation}/depenses/create', [DepenseController::class, 'create'])->name('depenses.create');
+    Route::post('/colocations/{colocation}/depenses', [DepenseController::class, 'store'])->name('depenses.store');
+    Route::post('/paiements/valider/{colocation}/{user}', [PaiementController::class, 'valider'])->name('paiements.valider');
+});

@@ -10,7 +10,7 @@ class DepenseParticipant extends Model
     use HasFactory;
 
     protected $fillable = [
-        'depense_id', 'user_id', 'montant_du'
+        'depense_id', 'utilisateur_id', 'montant_du' , 'is_paid'
     ];
 
     public function depense()

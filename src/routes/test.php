@@ -21,6 +21,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
+
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')

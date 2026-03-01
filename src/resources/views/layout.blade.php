@@ -19,8 +19,9 @@
     <aside class="w-64 bg-slate-900 text-white flex flex-col hidden md:flex">
         <div class="p-6">
             <h1 class="text-2xl font-bold tracking-tight text-blue-400">Colocation<span class="text-white">Systeme</span></h1>
-            <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">Global Admin</p>
+            <p class="text-xs text-slate-400 uppercase tracking-widest mt-1">@if(Auth::user()->role === 'admin') Admin @else Utilisateur @endif</p>
         </div>
+        @if(Auth::user()->role === 'admin')
         <nav class="flex-1 px-4 space-y-2">
             <p class="text-[10px] font-semibold text-slate-500 uppercase px-2">Navigation</p>
 
@@ -45,6 +46,17 @@
                 </a>
             </div>
         </nav>
+        @else
+        <nav class="flex-1 px-4 space-y-2">
+            <p class="text-[10px] font-semibold text-slate-500 uppercase px-2">Navigation</p>
+
+            <a href="{{ route('my_colocations.index') }}"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg transition hover:bg-slate-800 text-slate-300">
+
+                ma Colocation
+            </a>
+        </nav>
+        @endif
 
         <div class="p-4 border-t border-slate-800 bg-slate-950/50">
             <div class="flex items-center gap-3 mb-4">

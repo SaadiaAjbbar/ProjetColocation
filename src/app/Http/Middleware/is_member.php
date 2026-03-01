@@ -18,14 +18,15 @@ class is_member
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        
+
         if ($user->role == 'utilisateur') {
             $adhesion = Adhesion::where('user_id', $user->id)->where('left_at', null)->first();
 
+            $colocation = $adhesion ? $adhesion->colocation : null;
             if ($adhesion && $adhesion->role == "member") {
                 return $next($request);
             }else{
-                return redirect()->route("dashboard");
+                return redirect()->route("dashboardOwner" , $colocation->id);
             }
         } else {
             $adhesion = Adhesion::where('user_id', $user->id)->where('left_at', null)->first();

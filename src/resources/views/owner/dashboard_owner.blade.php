@@ -11,70 +11,105 @@
         <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight italic">
             {{ $colocation->name }}
         </h1>
-        <p class="text-gray-500 mt-1">Gérez vos membres, vos catégories et suivez la comptabilité du foyer.</p>
+        <p class="text-gray-500 mt-1">Gérez vos membres et validez les remboursements.</p>
     </div>
 
     <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-            </path>
-        </svg>
-        Administration
+        👥 État des comptes & Actions
     </h2>
-    <!--****************Gerer categories*************-->
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mb-10">
+        <div class="divide-y divide-gray-100">
+            @foreach ($usersTotals as $userTotal)
+                <div class="p-5 flex items-center justify-between hover:bg-gray-50 transition">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 {{ $userTotal['user']->id == Auth::id() ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-400' }} rounded-xl flex items-center justify-center font-bold uppercase text-xs">
+                            {{ strtoupper(substr($userTotal['user']->name, 0, 2)) }}
+                        </div>
+                        <div>
+                            <span class="font-bold text-gray-900 italic block leading-none">
+                                {{ $userTotal['user']->name }}
+                                @if ($userTotal['user']->id == Auth::id())
+                                    (Moi)
+                                @endif
+                            </span>
+                            @if ($userTotal['montant_du'] < 0)
+                                <span class="text-[10px] font-black text-red-400 uppercase tracking-tighter italic">Doit
+                                    payer</span>
+                            @elseif ($userTotal['montant_du'] > 0)
+                                <span class="text-[10px] font-black text-emerald-400 uppercase tracking-tighter italic">Doit
+                                    recevoir</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <div class="text-right">
+                            @if ($userTotal['montant_du'] < 0)
+                                <span class="text-lg font-black text-red-500">-
+                                    {{ number_format(abs($userTotal['montant_du']), 2) }} DH</span>
+                            @elseif ($userTotal['montant_du'] > 0)
+                                <span class="text-lg font-black text-emerald-500">+
+                                    {{ number_format($userTotal['montant_du'], 2) }} DH</span>
+                            @else
+                                <span class="text-lg font-black text-gray-300">0.00 DH</span>
+                            @endif
+                        </div>
+
+                        @if ($userTotal['montant_du'] > 0 && $userTotal['user']->id != Auth::id())
+                            <form action="{{ route('paiements.valider', [$colocation->id, $userTotal['user']->id]) }}"
+                                method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white text-[10px] font-black uppercase rounded-lg hover:bg-emerald-600 shadow-md shadow-emerald-100 transition-all active:scale-95">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Valider
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <a href="{{ route('categories.index', $colocation->id) }}"
-            class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all flex items-center gap-5">
-
-            <div>
-                <h3 class="text-lg font-bold text-gray-900">Gérer catégories</h3>
-                <p class="text-sm text-gray-500">Personnalisez les types de dépenses.</p>
-            </div>
+            class="bg-white p-6 rounded-2xl border border-gray-200 flex items-center gap-4">
+            <span class="text-2xl">🏷️</span>
+            <span class="font-bold">Gérer catégories</span>
         </a>
-        <!--***************Inviter member************-->
-        <form action="{{ route('invitations.store', $colocation->id) }}" method="POST"
-            class="group bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            @csrf
-            <h3 class="text-lg font-bold mb-2">Inviter membre</h3>
-            <input type="email" name="email" placeholder="Email du membre" class="border rounded px-3 py-2 w-full mb-3"
-                required>
-            <button class="bg-indigo-600 text-white px-4 py-2 rounded">
-                Envoyer invitation
-            </button>
-        </form>
-    </div>
-
-    <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Finances & Vie Commune</h2>
-    <div class="grid grid-cols-1 md:grid-cols-1 gap-6 mb-10">
-        <a href="#"
-            class="group bg-white p-8 rounded-2xl border-2 border-dashed border-gray-200 hover:border-emerald-500 hover:bg-emerald-50/30 transition-all flex flex-col items-center justify-center text-center">
-            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                    </path>
-                </svg>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900">Ajouter une dépense</h3>
-            <p class="text-gray-500 mt-1 max-w-xs">Partagez un nouveau coût avec l'ensemble des membres de la colocation.
-            </p>
-        </a>
-    </div>
-
-    <div class="mt-12 p-6 border border-red-100 bg-red-50/50 rounded-2xl flex items-center justify-between">
-        <div>
-            <h4 class="text-sm font-bold text-red-800 uppercase">Zone de danger</h4>
-            <p class="text-xs text-red-600">L'annulation de la colocation est irréversible et affectera la réputation des
-                membres débiteurs.</p>
+        <div class="bg-white p-6 rounded-2xl border border-gray-200">
+            <h3 class="font-bold mb-2">Inviter membre</h3>
+            <form action="{{ route('invitations.store', $colocation->id) }}" method="POST" class="flex gap-2">
+                @csrf
+                <input type="email" name="email" class="border rounded-lg px-3 py-1 flex-1 text-sm" placeholder="Email"
+                    required>
+                <button class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-xs uppercase font-bold">OK</button>
+            </form>
         </div>
-        <!--********************** Annuler Colocation *******************-->
-        <form action="{{ route('colocations.cancel', $colocation->id) }}" method="POST"
-            onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette colocation ?')">
+    </div>
+
+    <a href="{{ route('depenses.create', $colocation->id) }}"
+        class="w-full bg-white p-8 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center hover:border-emerald-500 transition">
+        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+        </div>
+        <span class="font-bold text-gray-900">Ajouter une dépense</span>
+    </a>
+
+    <div class="mt-10 p-6 bg-red-50 rounded-2xl flex justify-between items-center border border-red-100">
+        <span class="text-xs font-bold text-red-700 uppercase italic">Zone de danger</span>
+        <form action="{{ route('colocations.cancel', $colocation->id) }}" method="POST">
             @csrf
             <button
-                class="px-4 py-2 bg-white border border-red-200 text-red-600 text-xs font-bold rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm uppercase tracking-tighter">
-                Annuler la colocation
-            </button>
+                class="text-[10px] font-black text-red-600 bg-white border border-red-200 px-4 py-2 rounded-lg uppercase">Annuler
+                Coloc</button>
         </form>
     </div>
 @endsection

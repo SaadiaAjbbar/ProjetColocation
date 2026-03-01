@@ -36,12 +36,7 @@
             <p class="text-sm text-gray-500 font-medium">Dépenses</p>
         </div>
 
-        <a href="{{ route('users.banned') }}"
-            class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-red-500 hover:shadow-md transition-all duration-300">
 
-            <p class="text-3xl font-black text-gray-900">{{ $stats['banned_users'] }}</p>
-            <p class="text-sm text-gray-500 font-medium">Comptes bannis</p>
-        </a>
     </div>
 
     <div class="flex items-center justify-between mb-4">

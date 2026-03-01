@@ -10,7 +10,7 @@ class Depense extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom', 'montant', 'date', 'colocation_id', 'payer_id', 'category_id'
+        'nom', 'montant', 'date', 'colocation_id', 'payeur_id', 'categorie_id'
     ];
 
     public function colocation()
@@ -20,7 +20,7 @@ class Depense extends Model
 
     public function payer()
     {
-        return $this->belongsTo(User::class, 'payer_id');
+        return $this->belongsTo(User::class, 'payeur_id');
     }
 
     public function category()

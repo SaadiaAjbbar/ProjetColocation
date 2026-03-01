@@ -47,12 +47,12 @@
 
                 <div class="mt-auto border-t border-gray-100 bg-gray-50 p-4">
                     @if($coloc->adhesions->where('user_id', Auth::user()->id)->first()->role === 'owner')
-                    <a href="{{ route('colocations.dashboardOwner', $coloc->id) }}" class="flex items-center justify-center w-full px-4 py-2 bg-white border border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all gap-2 shadow-sm">
+                    <a href="{{ route('dashboardOwner', $coloc->id) }}" class="flex items-center justify-center w-full px-4 py-2 bg-white border border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all gap-2 shadow-sm">
                         Accéder au Dashboard
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </a>
                     @else
-                    <a href="{{ route('colocations.dashboardMember', $coloc->id) }}" class="flex items-center justify-center w-full px-4 py-2 bg-white border border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all gap-2 shadow-sm">
+                    <a href="{{ route('dashboardMember', $coloc->id) }}" class="flex items-center justify-center w-full px-4 py-2 bg-white border border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all gap-2 shadow-sm">
                         Accéder au Dashboard
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </a>

@@ -18,6 +18,7 @@
             <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Tableau de Bord</h1>
         </div>
 
+
         <div class="flex gap-3">
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                 <span class="w-2 h-2 mr-2 rounded-full bg-blue-500 animate-pulse"></span>
@@ -25,16 +26,76 @@
             </span>
         </div>
     </div>
+    <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+        👥 État des comptes & Actions
+    </h2>
+
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mb-10">
+        <div class="divide-y divide-gray-100">
+            @foreach ($usersTotals as $userTotal)
+                <div class="p-5 flex items-center justify-between hover:bg-gray-50 transition">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 {{ $userTotal['user']->id == Auth::id() ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-400' }} rounded-xl flex items-center justify-center font-bold uppercase text-xs">
+                            {{ strtoupper(substr($userTotal['user']->name, 0, 2)) }}
+                        </div>
+                        <div>
+                            <span class="font-bold text-gray-900 italic block leading-none">
+                                {{ $userTotal['user']->name }}
+                                @if ($userTotal['user']->id == Auth::id())
+                                    (Moi)
+                                @endif
+                            </span>
+                            @if ($userTotal['montant_du'] < 0)
+                                <span class="text-[10px] font-black text-red-400 uppercase tracking-tighter italic">Doit
+                                    payer</span>
+                            @elseif ($userTotal['montant_du'] > 0)
+                                <span class="text-[10px] font-black text-emerald-400 uppercase tracking-tighter italic">Doit
+                                    recevoir</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <div class="text-right">
+                            @if ($userTotal['montant_du'] < 0)
+                                <span class="text-lg font-black text-red-500">-
+                                    {{ number_format(abs($userTotal['montant_du']), 2) }} DH</span>
+                            @elseif ($userTotal['montant_du'] > 0)
+                                <span class="text-lg font-black text-emerald-500">+
+                                    {{ number_format($userTotal['montant_du'], 2) }} DH</span>
+                            @else
+                                <span class="text-lg font-black text-gray-300">0.00 DH</span>
+                            @endif
+                        </div>
+
+                        @if ($userTotal['montant_du'] > 0 && $userTotal['user']->id != Auth::id())
+                            <form action="{{ route('paiements.valider', [$colocation->id, $userTotal['user']->id]) }}"
+                                method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white text-[10px] font-black uppercase rounded-lg hover:bg-emerald-600 shadow-md shadow-emerald-100 transition-all active:scale-95">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Valider
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <!--******** totalDepenses *********-->
         <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
             <p class="text-sm font-medium text-gray-500">total Depenses</p>
             <p class="text-2xl font-bold text-gray-900 mt-1">
                 {{ number_format($totalDepenses, 2) }} €
             </p>
         </div>
-        <!--******** montant_du *********-->
         <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
             <p class="text-sm font-medium text-gray-500">ma part</p>
             <p class="text-2xl font-bold text-blue-600 mt-1">
@@ -53,7 +114,7 @@
     <h2 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Actions Rapides</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
-        <a href=""
+        <a href="{{ route('depenses.create', $colocation->id) }}"
             class="group relative bg-white p-8 rounded-2xl border border-gray-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
             <div
                 class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -80,19 +141,7 @@
             <p class="text-sm text-gray-500 mt-1">Régularisez vos dettes envers les membres.</p>
         </a>
 
-        <a href="#"
-            class="group relative bg-white p-8 rounded-2xl border border-gray-200 shadow-sm hover:border-indigo-500 hover:shadow-md transition-all">
-            <div
-                class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                    </path>
-                </svg>
-            </div>
-            <h3 class="text-lg font-bold text-gray-900">Gérer les membres</h3>
-            <p class="text-sm text-gray-500 mt-1">Invitez ou retirez des colocataires.</p>
-        </a>
+
 
     </div>
 
@@ -102,9 +151,7 @@
                 <h3 class="text-xl font-bold uppercase tracking-tight">Aperçu des Balances</h3>
                 <p class="text-xs text-slate-400 mt-1 font-mono italic">Calculé selon la règle d'équité</p>
             </div>
-            <button
-                class="text-sm text-slate-400 hover:text-white border border-slate-700 px-3 py-1 rounded-lg transition">Voir
-                le détail →</button>
+
         </div>
 
         @if ($balance > 0)

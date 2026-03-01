@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('depense_id')->constrained('depenses')->onDelete('cascade');
             $table->foreignId('utilisateur_id')->constrained('users')->onDelete('cascade');
+            $table->boolean('is_paid')->default(false);
             $table->float('montant_du');
             $table->timestamps();
         });
