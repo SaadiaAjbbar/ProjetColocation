@@ -88,7 +88,7 @@
             <div class="flex items-center gap-4">
                 <span
                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    Mode Admin
+
                 </span>
             </div>
         </header>

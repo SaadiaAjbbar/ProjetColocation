@@ -62,7 +62,7 @@ class ColocationController extends Controller
 
         User::where('id', $user->id)->decrement('reputation');
 
-        return redirect()->route('dashboardAdmin')->with('success', 'Colocation annulée avec succès');
+        return redirect()->route('dashboardUser')->with('success', 'Colocation annulée avec succès');
     }
 
     public function createColocation()
